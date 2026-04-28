@@ -27,7 +27,7 @@ AppDataSource.initialize()
             callback(null, true);
           }
           // Add your production frontend URL here later
-          else if (origin === "http://ibn.wadada.com") {
+          else if (origin === "https://wya-rho.vercel.app/") {
             callback(null, true);
           }
           else {
