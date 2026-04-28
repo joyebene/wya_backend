@@ -91,6 +91,9 @@ export class AdminController {
 
             const tokens = await this.adminLogic.login(email, password);
 
+            console.log(tokens);
+            
+
             if (!tokens) {
                 return res.status(401).json({ message: "Invalid credentials" });
             }

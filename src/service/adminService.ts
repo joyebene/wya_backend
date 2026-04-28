@@ -29,13 +29,17 @@ export class AdminService {
     }
 
     async login(email: string, password: string): Promise<{ accessToken: string, refreshToken: string } | null> {
-        const admin = await this.adminRepository.findOneBy({ email });
+        const admin = await this.adminRepository.findOne({
+            where: { email }
+        });
+        
+        
         if (!admin) {
             return null;
         }
 
         const isPasswordValid = await admin.comparePassword(password);
-        if (!isPasswordValid) {
+        if (!isPasswordValid) {            
             return null;
         }
 
@@ -53,6 +57,9 @@ export class AdminService {
 
         admin.refreshToken = refreshToken;
         await this.adminRepository.save(admin);
+
+       
+
 
         return { accessToken, refreshToken };
     }
@@ -91,11 +98,11 @@ export class AdminService {
 
 
     async getEventById(id: string): Promise<Event | null> {
-    return this.eventRepository.findOne({
-        where: { id },
-        relations: ["registered_workers"]
-    });
-}
+        return this.eventRepository.findOne({
+            where: { id },
+            relations: ["registered_workers"]
+        });
+    }
     async getEventRegistrations(eventId: string): Promise<Event | null> {
         return this.eventRepository.findOne({
             where: { id: eventId },
@@ -133,8 +140,9 @@ export class AdminService {
     async logout(refreshToken: string): Promise<void> {
         const admin = await this.adminRepository.findOneBy({ refreshToken });
         if (admin) {
-            admin.refreshToken = undefined;
-            await this.adminRepository.save(admin);
+            // By using `update` here, we only change the refreshToken field.
+            // This prevents the @BeforeUpdate hook in the Admin entity from running and re-hashing the password.
+            await this.adminRepository.update(admin.id, { refreshToken: undefined });
         }
     }
 

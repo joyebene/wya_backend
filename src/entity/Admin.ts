@@ -29,9 +29,17 @@ export class Admin {
 
     // This hook will automatically hash the password before it's saved to the database
     @BeforeInsert()
+    async hashPasswordOnInsert() {
+        if (this.password) {
+            this.password = await bcrypt.hash(this.password, 10);
+        }
+    }
+
     @BeforeUpdate()
-    async hashPassword() {
-        if (this.password && !this.password.startsWith("$2a$")) {
+    async hashPasswordOnUpdate() {
+        const isAlreadyHashed = this.password && this.password.length > 50;
+
+        if (this.password && !isAlreadyHashed) {
             this.password = await bcrypt.hash(this.password, 10);
         }
     }
