@@ -75,7 +75,7 @@ export class AdminController {
 
     createAdmin = async (req: Request, res: Response) => {
         try {
-            const admin = await this.adminLogic.createAdmin(req.body);
+            await this.adminLogic.createAdmin(req.body);
             res.status(201).json({ message: "Admin created successfully" });
         } catch (error: any) {
             res.status(400).json({ message: error.message });

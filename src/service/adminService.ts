@@ -15,6 +15,15 @@ export class AdminService {
     private settingRepository = AppDataSource.getRepository(Setting);
 
     async createAdmin(adminData: Partial<Admin>): Promise<Admin> {
+        if (!adminData.email) {
+            throw new Error("Email is required to create an admin.");
+        }
+
+        const existingAdmin = await this.adminRepository.findOne({ where: { email: adminData.email } });
+        if (existingAdmin) {
+            throw new Error("An admin with this email already exists.");
+        }
+
         const admin = this.adminRepository.create(adminData);
         return this.adminRepository.save(admin);
     }
