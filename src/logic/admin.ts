@@ -49,6 +49,10 @@ export class AdminLogic {
         return this.adminService.getUserById(userId);
     }
 
+    async deleteUser(userId: string): Promise<void> {
+        return this.adminService.deleteUser(userId);
+    }
+
     getDashboardSummary = async () => {
         return await this.adminService.getDashboardSummary();
     };

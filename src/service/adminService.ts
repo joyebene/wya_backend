@@ -119,6 +119,14 @@ export class AdminService {
         return this.workerRepository.findOneBy({ id: userId });
     }
 
+    async deleteUser(userId: string): Promise<void> {
+        const user = await this.workerRepository.findOneBy({ id: userId });
+        if (!user) {
+            throw new Error("User not found");
+        }
+        await this.workerRepository.delete(userId);
+    }
+
     async getDashboardSummary() {
         const recentUsers = await this.workerRepository.find({
             order: { created_at: 'DESC' },

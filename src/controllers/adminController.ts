@@ -62,6 +62,19 @@ export class AdminController {
         res.json(user);
     };
 
+    deleteUser = async (req: Request, res: Response) => {
+        try {
+            await this.adminLogic.deleteUser(req.params.id as string);
+            res.status(200).json({ message: "User deleted successfully" });
+        } catch (error: any) {
+            if (error.message === "User not found") {
+                res.status(404).json({ message: error.message });
+            } else {
+                res.status(500).json({ message: "An error occurred while deleting the user" });
+            }
+        }
+    };
+
     uploadGalleryImage = async (req: Request, res: Response) => {
         const { title, category } = req.body;
         const image = await this.adminLogic.createGalleryImage(req.file!, title, category);

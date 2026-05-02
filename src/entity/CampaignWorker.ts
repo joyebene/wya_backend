@@ -36,12 +36,27 @@ export class CampaignWorker {
   ward?: string;
 
   @Column({ nullable: true })
+  polling_unit?: string;
+
+  @Column({ nullable: true })
+  occupation?: string;
+
+  @Column({ nullable: true })
+  age?: number;
+
+  @Column({ nullable: true })
+  gender?: string;
+
+  @Column({ type: "text", nullable: true })
+  address?: string;
+
+  @Column({ type: "text", nullable: true })
+  reason_to_join?: string;
+
+  @Column({ nullable: true })
   preferred_role?: string;
 
-  @Column({ nullable: true, type: "text" })
-  skills?: string;
-
-  @Column({ type: 'boolean', default: true }) // ✅ Added type
+  @Column({ type: 'boolean', default: true })
   consent!: boolean;
 
   @ManyToMany(() => Event, event => event.registered_workers)

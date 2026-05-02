@@ -47,6 +47,12 @@ adminRouter.get(
     authorizeRole("admin"),
     adminController.getUserById
 );
+adminRouter.delete(
+    "/users/:id",
+    authenticateJWT,
+    authorizeRole("admin"),
+    adminController.deleteUser
+);
 adminRouter.post(
     "/gallery",
     authenticateJWT,
