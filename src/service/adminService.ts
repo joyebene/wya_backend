@@ -124,7 +124,8 @@ export class AdminService {
         if (!user) {
             throw new Error("User not found");
         }
-        await this.workerRepository.delete(userId);
+        // .remove() works on the entity instance, handles cascades, and removes related entries from join tables.
+        await this.workerRepository.remove(user);
     }
 
     async getDashboardSummary() {

@@ -27,19 +27,13 @@ export class Admin {
     @UpdateDateColumn()
     updatedAt!: Date;
 
-    // This hook will automatically hash the password before it's saved to the database
     @BeforeInsert()
-    async hashPasswordOnInsert() {
-        if (this.password) {
-            this.password = await bcrypt.hash(this.password, 10);
-        }
-    }
-
     @BeforeUpdate()
-    async hashPasswordOnUpdate() {
-        const isAlreadyHashed = this.password && this.password.length > 50;
-
-        if (this.password && !isAlreadyHashed) {
+    async hashPassword() {
+        // This combined hook will run for both inserts and updates.
+        // It checks if the password field is present and if it's not already a long hash.
+        // Bcrypt hashes are typically 60 characters long.
+        if (this.password && this.password.length < 50) {
             this.password = await bcrypt.hash(this.password, 10);
         }
     }
