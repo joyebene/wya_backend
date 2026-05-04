@@ -52,6 +52,9 @@ export class AdminLogic {
     async deleteUser(userId: string): Promise<void> {
         return this.adminService.deleteUser(userId);
     }
+    async deleteEvent(eventId: string): Promise<void> {
+        return this.adminService.deleteEvent(eventId);
+    }
 
     getDashboardSummary = async () => {
         return await this.adminService.getDashboardSummary();

@@ -128,6 +128,15 @@ export class AdminService {
         await this.workerRepository.remove(user);
     }
 
+    async deleteEvent(eventId: string): Promise<void> {
+        const event = await this.eventRepository.findOneBy({ id: eventId });
+        if (!event) {
+            throw new Error("Event not found");
+        }
+        // Use .remove() to also delete related registrations from the join table
+        await this.eventRepository.remove(event);
+    }
+
     async getDashboardSummary() {
         const recentUsers = await this.workerRepository.find({
             order: { created_at: 'DESC' },

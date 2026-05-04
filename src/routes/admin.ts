@@ -40,6 +40,14 @@ adminRouter.get(
     authorizeRole("admin"),
     adminController.getEventRegistrations
 );
+
+adminRouter.delete(
+    "/events/:id",
+    authenticateJWT,
+    authorizeRole("admin"),
+    adminController.deleteEvent
+);
+
 adminRouter.get("/users", authenticateJWT, authorizeRole("admin"), adminController.getUsers);
 adminRouter.get(
     "/users/:id",
