@@ -42,8 +42,8 @@ export class AdminLogic {
         return this.adminService.getEventRegistrations(eventId);
     }
 
-    async getUsers(): Promise<CampaignWorker[]> {
-        return this.adminService.getUsers();
+    async getUsers(query?: string): Promise<CampaignWorker[]> {
+        return this.adminService.getUsers(query);
     }
     async getUserById(userId: string): Promise<CampaignWorker | null> {
         return this.adminService.getUserById(userId);

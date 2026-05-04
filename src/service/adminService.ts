@@ -109,10 +109,19 @@ export class AdminService {
             relations: ["registered_workers"],
         });
     }
-    async getUsers(): Promise<CampaignWorker[]> {
-        return this.workerRepository.find({
-            order: { created_at: 'DESC' }
-        });
+    async getUsers(query?: string): Promise<CampaignWorker[]> {
+        const queryBuilder = this.workerRepository.createQueryBuilder("worker");
+
+        if (query) {
+            queryBuilder.where("worker.full_name ILIKE :query", { query: `%${query}%` })
+                .orWhere("worker.lga ILIKE :query", { query: `%${query}%` })
+                .orWhere("worker.ward ILIKE :query", { query: `%${query}%` })
+                .orWhere("worker.polling_unit ILIKE :query", { query: `%${query}%` });
+        }
+
+        return queryBuilder
+            .orderBy("worker.created_at", "DESC")
+            .getMany();
     }
 
     async getUserById(userId: string): Promise<CampaignWorker | null> {

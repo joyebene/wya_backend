@@ -50,7 +50,8 @@ export class AdminController {
     };
 
     getUsers = async (req: Request, res: Response) => {
-        const users = await this.adminLogic.getUsers();
+        const query = req.query.search as string | undefined;
+        const users = await this.adminLogic.getUsers(query);
         res.json(users);
     };
 
