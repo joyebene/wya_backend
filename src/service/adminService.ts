@@ -149,12 +149,12 @@ export class AdminService {
     async getDashboardSummary() {
         const recentUsers = await this.workerRepository.find({
             order: { created_at: 'DESC' },
-            take: 3,
+            take: 5,
         });
 
         const recentEvents = await this.eventRepository.find({
             order: { created_at: 'DESC' },
-            take: 3,
+            take: 5,
         });
 
         const totalMembers = await this.workerRepository.count();
